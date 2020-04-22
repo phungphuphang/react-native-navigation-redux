@@ -21,7 +21,7 @@ const mealReducer = (state = initalState, action) => {
         return {...state, favMeals: state.favMeals.concat(meal)};
       }
     case SET_FILTER:
-      const appliedFilters = action.filters
+      const appliedFilters = action.filterSettings
       const filteredMeals = state.meals.filter(meal => {
         if (appliedFilters.gluenFree && !meal.isGlutenFree) {
           return false

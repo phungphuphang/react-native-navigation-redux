@@ -2,6 +2,8 @@ import React, {useState, useEffect, useCallback} from 'react';
 import {View, Text, StyleSheet, Switch, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Colors from '../constants/Colors';
+import {useDispatch} from 'react-redux'
+import {setFilter} from '../store/actions/meal'
 
 const FilterItem = props => {
   return (
@@ -16,11 +18,13 @@ const FilterItem = props => {
   );
 };
 
-export const FilterScreen = ({navigation, route}) => {
+export const FilterScreen = ({route, navigation}) => {
   const [isGluenFree, setIsGluenFree] = useState(false);
   const [isLactoseFree, setIsLactoseFree] = useState(false);
   const [isVegan, setIsVegen] = useState(false);
   const [isVegetarian, setIsVegetarian] = useState(false);
+
+  const filterDispatch = useDispatch();
 
   const saveFilters = useCallback(() => {
     const appliedFilters = {
@@ -29,8 +33,7 @@ export const FilterScreen = ({navigation, route}) => {
       vegan: isVegan,
       vegetarian: isVegetarian,
     };
-
-    console.log(appliedFilters);
+    filterDispatch(setFilter(appliedFilters))
   }, [isGluenFree, isLactoseFree, isVegan, isVegetarian]);
 
   useEffect(() => {
@@ -52,7 +55,7 @@ export const FilterScreen = ({navigation, route}) => {
     },
     headerRight: () => {
       return (
-        <TouchableOpacity onPress={route.params.filters}>
+        <TouchableOpacity onPress={route.params && route.params.filters}>
           <Icon name="ios-save" size={25} color={Colors.primaryColor} />
         </TouchableOpacity>
       );
